@@ -1,0 +1,45 @@
+-- Create the Register table to store user information
+CREATE TABLE Register (
+    reg_id INT AUTO_INCREMENT PRIMARY KEY,
+    reg_name VARCHAR(100) NOT NULL,
+    reg_accno VARCHAR(20) UNIQUE NOT NULL,
+    reg_balance DECIMAL(15, 2) DEFAULT 0,
+    reg_email VARCHAR(100) NOT NULL,
+    reg_phone VARCHAR(15) NOT NULL
+);
+
+-- Create the Recharge table to store recharge transactions
+CREATE TABLE Recharge (
+    recharge_id INT AUTO_INCREMENT PRIMARY KEY,
+    reg_id INT,
+    amount DECIMAL(15, 2) NOT NULL,
+    recharge_date DATE NOT NULL,
+    FOREIGN KEY (reg_id) REFERENCES Register(reg_id)
+);
+
+-- Create the FundTransfer table to store fund transfer transactions
+CREATE TABLE FundTransfer (
+    transfer_id INT AUTO_INCREMENT PRIMARY KEY,
+    sender_id INT,
+    receiver_id INT,
+    amount DECIMAL(15, 2) NOT NULL,
+    transfer_date DATE NOT NULL,
+    FOREIGN KEY (sender_id) REFERENCES Register(reg_id),
+    FOREIGN KEY (receiver_id) REFERENCES Register(reg_id)
+);
+
+-- Create the Account table to store account information
+CREATE TABLE Account (
+    acc_id INT AUTO_INCREMENT PRIMARY KEY,
+    reg_id INT UNIQUE,
+    balance DECIMAL(15, 2) DEFAULT 0,
+    FOREIGN KEY (reg_id) REFERENCES Register(reg_id)
+);
+
+-- Create the Branch table to store branch information
+CREATE TABLE Branch (
+    branch_id INT AUTO_INCREMENT PRIMARY KEY,
+    branch_name VARCHAR(100) NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    manager VARCHAR(100) NOT NULL
+);
